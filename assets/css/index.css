@@ -1,0 +1,136 @@
+/* ================================================
+   INDEX.CSS — Page d'accueil
+   ================================================ */
+
+/* ── Hero ── */
+.hero {
+  text-align: center;
+  padding: 3rem 1rem 2rem;
+}
+.hero-icon {
+  font-size: 5rem;
+  display: block;
+  margin-bottom: 1rem;
+  animation: bounce 2s infinite;
+}
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-12px); }
+}
+.hero h1 {
+  font-family: 'Fredoka One', cursive;
+  font-size: 3rem;
+  line-height: 1.1;
+  margin-bottom: 1rem;
+}
+.hero p {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  max-width: 560px;
+  margin: 0 auto 2rem;
+}
+.hero-btns {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* ── Étapes ── */
+@keyframes rainbow-spin {
+  0%   { background-position: 0% 50%; }
+  100% { background-position: 300% 50%; }
+}
+
+.step-card {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 1.25rem;
+  border: none !important;
+  isolation: isolate;
+}
+
+/* Couche arc-en-ciel (bordure) */
+.step-card::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: 18px;
+  background: linear-gradient(
+    120deg,
+    var(--rainbow-1), var(--rainbow-2), var(--rainbow-3),
+    var(--rainbow-4), var(--rainbow-5), var(--rainbow-6),
+    var(--rainbow-1)
+  );
+  background-size: 300% 300%;
+  z-index: -2;
+  transition: opacity 0.3s ease;
+}
+/* Fond de la carte par-dessus, laisse 2px de bordure visible */
+.step-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 16px;
+  background: var(--bg-card);
+  z-index: -1;
+}
+.step-card:hover::before {
+  animation: rainbow-spin 2s linear infinite;
+}
+
+/* Chiffre dans son cercle */
+.step-number {
+  flex-shrink: 0;
+  width: 2.2rem;
+  height: 2.2rem;
+  border-radius: 50%;
+  background: var(--rainbow-gradient-h);
+  color: white;
+  font-family: 'Fredoka One', cursive;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 0.1rem;
+}
+
+.step-card h3 {
+  font-weight: 800;
+  font-size: 1rem;
+  margin-bottom: 0.3rem;
+}
+.step-card p { color: var(--text-secondary); font-size: 0.9rem; }
+
+/* ── Stats ── */
+.stats-bar {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 2rem;
+}
+.stat-pill {
+  flex: 1;
+  min-width: 140px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 14px;
+  padding: 1.1rem 1rem;
+  text-align: center;
+}
+.stat-pill .stat-number {
+  font-family: 'Fredoka One', cursive;
+  font-size: 2rem;
+  background: var(--rainbow-gradient-h);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.stat-pill .stat-label {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}

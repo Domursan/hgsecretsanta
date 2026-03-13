@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Votes — Père Noël Secret</title>
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <link rel="stylesheet" href="../assets/css/votes.css" />
+</head>
+<body>
+
+  <div id="navbar-container"></div>
+
+  <main class="main-content">
+    <h1 class="page-title">🗳️ Votes</h1>
+
+    <div id="alert-container"></div>
+
+    <!-- Identification -->
+    <div class="voter-id-box animate-in">
+      <h3>✉️ Identifie-toi pour voter</h3>
+      <p class="text-muted mb-2" style="font-size:0.88rem;">Entre l'email avec lequel tu t'es inscrit.e.</p>
+      <div class="voter-id-inline">
+        <div class="form-group">
+          <input type="email" id="voter-email" placeholder="ton@email.com" />
+        </div>
+        <button class="btn btn-primary" id="verify-btn">Vérifier →</button>
+      </div>
+    </div>
+
+    <!-- Formulaire de vote (visible après vérif) -->
+    <form id="vote-form" action="https://formspree.io/f/xkoqzjgq" method="POST" novalidate>
+      <div class="rainbow-divider"></div>
+
+      <!-- Champ email caché pour Formspree -->
+      <input type="hidden" name="email" id="hidden-email" />
+      <input type="hidden" name="date_vote" id="hidden-date" />
+
+      <!-- Vote participation -->
+      <div class="vote-section">
+        <h2>🎅 Êtes-vous intéressé à participer ?</h2>
+        <p class="desc">Indique si tu souhaites participer à ce Père Noël Secret.</p>
+        <div class="vote-options" id="participation-options">
+          <div class="vote-option"><input type="radio" name="participation" id="p1" value="oui"><label for="p1"><span class="option-emoji">✅</span><span class="option-label">Oui</span></label></div>
+          <div class="vote-option"><input type="radio" name="participation" id="p2" value="non"><label for="p2"><span class="option-emoji">❌</span><span class="option-label">Non</span></label></div>
+        </div>
+      </div>
+
+      <div class="rainbow-divider"></div>
+
+      <!-- Vote budget — masqué pour l'instant -->
+      <div style="display:none;">
+      <div class="vote-section">
+        <h2>💰 Quel budget ?</h2>
+        <p class="desc">Vote pour le budget que tu trouves raisonnable pour ce Père Noël Secret.</p>
+        <div class="vote-options" id="budget-options">
+          <div class="vote-option"><input type="radio" name="budget" id="b1" value="10-15"><label for="b1"><span class="option-emoji">🪙</span><span class="option-label">10 – 15 €</span></label></div>
+          <div class="vote-option"><input type="radio" name="budget" id="b2" value="15-25"><label for="b2"><span class="option-emoji">💵</span><span class="option-label">15 – 25 €</span></label></div>
+          <div class="vote-option"><input type="radio" name="budget" id="b3" value="25-40"><label for="b3"><span class="option-emoji">💸</span><span class="option-label">25 – 40 €</span></label></div>
+          <div class="vote-option"><input type="radio" name="budget" id="b4" value="40+"><label for="b4"><span class="option-emoji">💎</span><span class="option-label">40 € et +</span></label></div>
+        </div>
+      </div>
+
+      <div class="rainbow-divider"></div>
+
+      <!-- Vote date — masqué pour l'instant -->
+      <div class="vote-section">
+        <h2>📅 Quelle date d'échange ?</h2>
+        <p class="desc">Vote pour la date qui te convient le mieux pour l'échange de cadeaux.</p>
+        <div class="vote-options" id="date-options">
+          <div class="vote-option"><input type="radio" name="date_echange" id="d1" value="avant-noel"><label for="d1"><span class="option-emoji">🌲</span><span class="option-label">Avant Noël</span></label></div>
+          <div class="vote-option"><input type="radio" name="date_echange" id="d2" value="entre-noel-nouvel-an"><label for="d2"><span class="option-emoji">🍾</span><span class="option-label">Entre Noël & nouvel-an</span></label></div>
+          <div class="vote-option"><input type="radio" name="date_echange" id="d3" value="apres-nouvel-an"><label for="d3"><span class="option-emoji">🎆</span><span class="option-label">Après nouvel-an</span></label></div>
+          <div class="vote-option"><input type="radio" name="date_echange" id="d4" value="juillet-2047"><label for="d4"><span class="option-emoji">☀️</span><span class="option-label">Juillet 2047</span></label></div>
+        </div>
+      </div>
+      </div><!-- fin masquage votes 2 et 3 -->
+
+      <div style="text-align:center;margin-top:2.5rem;">
+        <button type="submit" class="btn btn-primary" id="vote-btn" data-original-text="🗳️ Voter !" style="padding:1rem 3rem;font-size:1.2rem;">
+          🗳️ Voter !
+        </button>
+      </div>
+
+    </form>
+  </main>
+
+  <div id="footer-container"></div>
+
+  <script src="../assets/js/main.js"></script>
+  <script>
+    let voterEmail = '';
+
+    // Vérification email — vérifie juste le format, pas de base de données
+    document.getElementById('verify-btn').addEventListener('click', () => {
+      const email = document.getElementById('voter-email').value.trim();
+      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        showAlert('alert-container', 'Entre une adresse email valide.', 'error');
+        return;
+      }
+
+      // Vérifier si déjà voté (stocké localement)
+      const dejaVote = localStorage.getItem('vote_' + email);
+      if (dejaVote) {
+        showAlert('alert-container', 'Tu as déjà voté avec cet email. Merci ! 🗳️', 'info');
+        return;
+      }
+
+      voterEmail = email;
+      document.getElementById('hidden-email').value = email;
+      document.getElementById('hidden-date').value  = new Date().toISOString();
+      document.getElementById('vote-form').classList.add('visible');
+      showAlert('alert-container', 'Tu peux voter ci-dessous ! 🎉', 'success');
+    });
+
+    // Entrée clavier sur l'email
+    document.getElementById('voter-email').addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') document.getElementById('verify-btn').click();
+    });
+
+    // Soumission vote
+    document.getElementById('vote-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const participation = document.querySelector('input[name="participation"]:checked')?.value;
+
+      if (!participation) {
+        showAlert('alert-container', 'Merci de répondre à la question.', 'error');
+        return;
+      }
+
+      const btn = document.getElementById('vote-btn');
+      setLoading(btn, true);
+
+      try {
+        const formData = new FormData(e.target);
+        const res = await fetch(e.target.action, {
+          method: 'POST',
+          body: formData,
+          headers: { 'Accept': 'application/json' }
+        });
+
+        if (res.ok) {
+          // Mémoriser le vote localement pour éviter les doublons
+          localStorage.setItem('vote_' + voterEmail, JSON.stringify({ budget, date_echange: date }));
+          showAlert('alert-container', 'Ton vote a bien été enregistré ! Merci 🗳️', 'success');
+          document.getElementById('vote-form').classList.remove('visible');
+          document.getElementById('voter-email').value = '';
+        } else {
+          showAlert('alert-container', 'Une erreur est survenue. Réessaie.', 'error');
+        }
+      } catch(err) {
+        showAlert('alert-container', 'Impossible de contacter le serveur.', 'error');
+      } finally {
+        setLoading(btn, false, '🗳️ Voter !');
+      }
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin — Père Noël Secret</title>
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <link rel="stylesheet" href="../assets/css/admin.css" />
+</head>
+<body>
+
+  <div id="navbar-container"></div>
+
+  <main style="padding-top: var(--navbar-height);">
+
+    <!-- ── Écran de connexion ── -->
+    <div class="login-wrapper" id="login-screen">
+      <div class="card login-card animate-in">
+        <span class="lock-icon">🔒</span>
+        <h2>Accès Admin</h2>
+        <p>Entre le mot de passe pour accéder au panel de gestion.</p>
+        <div id="alert-container"></div>
+        <div class="form-group" style="text-align:left;">
+          <label for="admin-password">Mot de passe</label>
+          <input type="password" id="admin-password" placeholder="••••••••" autocomplete="current-password" />
+        </div>
+        <button class="btn btn-primary" id="login-btn" style="width:100%;" data-original-text="🔓 Accéder">
+          🔓 Accéder
+        </button>
+      </div>
+    </div>
+
+    <!-- ── Panel admin ── -->
+    <div id="admin-panel" class="main-content" style="padding-top:1.5rem;">
+
+      <div class="admin-header">
+        <h1>🎅 Panel Admin</h1>
+        <button class="btn btn-outline" id="logout-btn">🔒 Déconnexion</button>
+      </div>
+
+      <!-- Stats globales -->
+      <div class="admin-stats" id="admin-stats">
+        <div class="admin-stat"><div class="num" id="as-inscrits">—</div><div class="lbl">Inscrits</div></div>
+        <div class="admin-stat"><div class="num" id="as-votes">—</div><div class="lbl">Votes</div></div>
+        <div class="admin-stat"><div class="num" id="as-demandes">—</div><div class="lbl">Demandes</div></div>
+        <div class="admin-stat"><div class="num" id="as-ouvertes">—</div><div class="lbl">Demandes ouvertes</div></div>
+      </div>
+
+      <!-- Tabs -->
+      <div class="tabs">
+        <button class="tab-btn active" data-tab="inscriptions">📝 Inscriptions</button>
+        <button class="tab-btn"        data-tab="votes">🗳️ Votes</button>
+        <button class="tab-btn"        data-tab="demandes">🆘 Demandes d'assistance</button>
+      </div>
+
+      <!-- Tab : Inscriptions -->
+      <div class="tab-panel active" id="tab-inscriptions">
+        <div class="table-toolbar">
+          <input type="text" id="search-inscrits" placeholder="🔍 Rechercher un participant…" />
+          <button class="btn btn-outline" id="refresh-inscrits">🔄 Actualiser</button>
+          <button class="btn btn-primary" id="tirage-btn">🎲 Lancer le tirage</button>
+        </div>
+        <div class="table-wrapper">
+          <table id="table-inscrits">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Prénom</th>
+                <th>Nom</th>
+                <th>Email</th>
+                <th>Souhaits</th>
+                <th>Restrictions</th>
+                <th>Date inscription</th>
+                <th>Père Noël attribué</th>
+              </tr>
+            </thead>
+            <tbody id="tbody-inscrits">
+              <tr><td colspan="8" style="text-align:center;color:var(--text-muted);padding:2rem;">Chargement…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Tab : Votes -->
+      <div class="tab-panel" id="tab-votes">
+        <div class="table-toolbar">
+          <button class="btn btn-outline" id="refresh-votes">🔄 Actualiser</button>
+        </div>
+        <div class="table-wrapper">
+          <table id="table-votes">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Email</th>
+                <th>Budget voté</th>
+                <th>Date d'échange votée</th>
+                <th>Date du vote</th>
+              </tr>
+            </thead>
+            <tbody id="tbody-votes">
+              <tr><td colspan="5" style="text-align:center;color:var(--text-muted);padding:2rem;">Chargement…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Tab : Demandes -->
+      <div class="tab-panel" id="tab-demandes">
+        <div class="table-toolbar">
+          <input type="text" id="search-demandes" placeholder="🔍 Rechercher une demande…" />
+          <select class="statut-select" id="filter-statut">
+            <option value="">Tous les statuts</option>
+            <option value="ouvert">Ouvert</option>
+            <option value="en-cours">En cours</option>
+            <option value="resolu">Résolu</option>
+          </select>
+          <button class="btn btn-outline" id="refresh-demandes">🔄 Actualiser</button>
+        </div>
+        <div class="table-wrapper">
+          <table id="table-demandes">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Email</th>
+                <th>Catégorie</th>
+                <th>Sujet</th>
+                <th>Message</th>
+                <th>Date</th>
+                <th>Statut</th>
+              </tr>
+            </thead>
+            <tbody id="tbody-demandes">
+              <tr><td colspan="7" style="text-align:center;color:var(--text-muted);padding:2rem;">Chargement…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <div id="footer-container"></div>
+
+  <script src="../assets/js/main.js"></script>
+  <script>
+    /* ── Mot de passe admin (à changer !) ── */
+    const ADMIN_PASSWORD = 'secretsantahg';
+
+    /* ── Login ── */
+    document.getElementById('login-btn').addEventListener('click', () => {
+      const pwd = document.getElementById('admin-password').value;
+      if (pwd === ADMIN_PASSWORD) {
+        document.getElementById('login-screen').style.display = 'none';
+        document.getElementById('admin-panel').classList.add('visible');
+        sessionStorage.setItem('admin_auth', '1');
+        loadAll();
+      } else {
+        showAlert('alert-container', 'Mot de passe incorrect.', 'error');
+        document.getElementById('admin-password').value = '';
+      }
+    });
+    document.getElementById('admin-password').addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') document.getElementById('login-btn').click();
+    });
+
+    /* Persistance session */
+    if (sessionStorage.getItem('admin_auth') === '1') {
+      document.getElementById('login-screen').style.display = 'none';
+      document.getElementById('admin-panel').classList.add('visible');
+      document.addEventListener('DOMContentLoaded', loadAll);
+    }
+
+    /* ── Logout ── */
+    document.getElementById('logout-btn').addEventListener('click', () => {
+      sessionStorage.removeItem('admin_auth');
+      location.reload();
+    });
+
+    /* ── Tabs ── */
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+      });
+    });
+
+    /* ── Chargement données ── */
+    async function loadAll() {
+      await Promise.all([loadInscrits(), loadVotes(), loadDemandes(), loadAdminStats()]);
+    }
+
+    async function loadInscrits() {
+      try {
+        const data = await apiFetch('getInscrits');
+        renderInscrits(data.inscrits || []);
+      } catch(e) { renderInscrits([]); }
+    }
+
+    async function loadVotes() {
+      try {
+        const data = await apiFetch('getAllVotes');
+        renderVotes(data.votes || []);
+      } catch(e) { renderVotes([]); }
+    }
+
+    async function loadDemandes() {
+      try {
+        const data = await apiFetch('getDemandes');
+        renderDemandes(data.demandes || []);
+      } catch(e) { renderDemandes([]); }
+    }
+
+    async function loadAdminStats() {
+      try {
+        const data = await apiFetch('getAdminStats');
+        document.getElementById('as-inscrits').textContent  = data.inscrits  ?? '—';
+        document.getElementById('as-votes').textContent     = data.votes     ?? '—';
+        document.getElementById('as-demandes').textContent  = data.demandes  ?? '—';
+        document.getElementById('as-ouvertes').textContent  = data.ouvertes  ?? '—';
+      } catch(e) {}
+    }
+
+    /* ── Rendu tableaux ── */
+    function renderInscrits(rows) {
+      const tbody = document.getElementById('tbody-inscrits');
+      if (!rows.length) {
+        tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;color:var(--text-muted);padding:2rem;">Aucun inscrit pour le moment.</td></tr>';
+        return;
+      }
+      tbody.innerHTML = rows.map((r, i) => `
+        <tr>
+          <td><span class="badge badge-blue">${i + 1}</span></td>
+          <td><strong>${r.prenom || '—'}</strong></td>
+          <td>${r.nom || '—'}</td>
+          <td><a href="mailto:${r.email}" style="color:var(--rainbow-5)">${r.email || '—'}</a></td>
+          <td style="max-width:180px;white-space:normal;font-size:0.82rem">${r.souhaits || '—'}</td>
+          <td style="max-width:140px;white-space:normal;font-size:0.82rem">${r.restrictions || '—'}</td>
+          <td style="font-size:0.82rem">${formatDate(r.date)}</td>
+          <td>${r.pere_noel ? `<span class="badge badge-green">✅ ${r.pere_noel}</span>` : '<span class="badge badge-orange">En attente</span>'}</td>
+        </tr>`).join('');
+    }
+
+    function renderVotes(rows) {
+      const tbody = document.getElementById('tbody-votes');
+      if (!rows.length) {
+        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--text-muted);padding:2rem;">Aucun vote pour le moment.</td></tr>';
+        return;
+      }
+      tbody.innerHTML = rows.map((r, i) => `
+        <tr>
+          <td><span class="badge badge-purple">${i + 1}</span></td>
+          <td>${r.email || '—'}</td>
+          <td><span class="badge badge-yellow">${r.budget || '—'}</span></td>
+          <td><span class="badge badge-green">${r.date_echange || '—'}</span></td>
+          <td style="font-size:0.82rem">${formatDate(r.date)}</td>
+        </tr>`).join('');
+    }
+
+    function renderDemandes(rows) {
+      const tbody = document.getElementById('tbody-demandes');
+      if (!rows.length) {
+        tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:var(--text-muted);padding:2rem;">Aucune demande pour le moment.</td></tr>';
+        return;
+      }
+      const statutColors = { 'ouvert': 'badge-red', 'en-cours': 'badge-orange', 'resolu': 'badge-green' };
+      tbody.innerHTML = rows.map((r, i) => `
+        <tr>
+          <td><span class="badge badge-blue">${i + 1}</span></td>
+          <td><a href="mailto:${r.email}" style="color:var(--rainbow-5)">${r.email || '—'}</a></td>
+          <td><span class="badge badge-purple">${r.categorie || '—'}</span></td>
+          <td><strong>${r.sujet || '—'}</strong></td>
+          <td style="max-width:200px;white-space:normal;font-size:0.82rem">${r.message || '—'}</td>
+          <td style="font-size:0.82rem">${formatDate(r.date)}</td>
+          <td>
+            <select class="statut-select" onchange="updateStatut(${i}, this.value, '${r.email}', '${r.date}')">
+              <option value="ouvert"   ${r.statut==='ouvert'   ?'selected':''}>🔴 Ouvert</option>
+              <option value="en-cours" ${r.statut==='en-cours' ?'selected':''}>🟠 En cours</option>
+              <option value="resolu"   ${r.statut==='resolu'   ?'selected':''}>🟢 Résolu</option>
+            </select>
+          </td>
+        </tr>`).join('');
+    }
+
+    /* ── Mise à jour statut demande ── */
+    async function updateStatut(idx, newStatut, email, date) {
+      try {
+        await apiPost('updateStatutDemande', { email, date, statut: newStatut });
+      } catch(e) { console.warn('Erreur update statut', e); }
+    }
+
+    /* ── Recherche inscriptions ── */
+    document.getElementById('search-inscrits').addEventListener('input', function() {
+      const q = this.value.toLowerCase();
+      document.querySelectorAll('#tbody-inscrits tr').forEach(tr => {
+        tr.style.display = tr.textContent.toLowerCase().includes(q) ? '' : 'none';
+      });
+    });
+
+    /* ── Recherche demandes ── */
+    document.getElementById('search-demandes').addEventListener('input', filterDemandes);
+    document.getElementById('filter-statut').addEventListener('change', filterDemandes);
+    function filterDemandes() {
+      const q = document.getElementById('search-demandes').value.toLowerCase();
+      const s = document.getElementById('filter-statut').value.toLowerCase();
+      document.querySelectorAll('#tbody-demandes tr').forEach(tr => {
+        const matchQ = tr.textContent.toLowerCase().includes(q);
+        const matchS = !s || tr.textContent.toLowerCase().includes(s);
+        tr.style.display = matchQ && matchS ? '' : 'none';
+      });
+    }
+
+    /* ── Refresh buttons ── */
+    document.getElementById('refresh-inscrits').addEventListener('click', loadInscrits);
+    document.getElementById('refresh-votes').addEventListener('click', loadVotes);
+    document.getElementById('refresh-demandes').addEventListener('click', loadDemandes);
+
+    /* ── Tirage au sort (placeholder) ── */
+    document.getElementById('tirage-btn').addEventListener('click', () => {
+      if (!confirm('Lancer le tirage au sort ? Cette action est irréversible.')) return;
+      alert('🎲 Tirage lancé ! (À connecter à l\'Apps Script)');
+    });
+  </script>
+
+</body>
+</html>

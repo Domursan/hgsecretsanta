@@ -1,0 +1,97 @@
+/* ================================================
+   ASSISTANCE.CSS — Formulaire d'assistance + FAQ
+   ================================================ */
+
+.form-card { max-width: 640px; margin: 0 auto; }
+.form-card h2 {
+  font-family: 'Fredoka One', cursive;
+  font-size: 1.6rem;
+  margin-bottom: 0.4rem;
+}
+.form-card .subtitle {
+  color: var(--text-secondary);
+  font-size: 0.92rem;
+  margin-bottom: 1.75rem;
+}
+
+/* ── Catégories ── */
+.categorie-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+.categorie-option input[type="radio"] { display: none; }
+.categorie-option label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.85rem 0.5rem;
+  background: var(--bg-input);
+  border: 2px solid var(--border-color);
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-align: center;
+  transition: all 0.2s ease;
+}
+.categorie-option label .cat-emoji { font-size: 1.5rem; }
+.categorie-option input:checked + label {
+  border-color: var(--rainbow-4);
+  background: rgba(155,93,229,0.1);
+  box-shadow: 0 0 0 3px rgba(155,93,229,0.15);
+}
+.categorie-option label:hover {
+  border-color: var(--rainbow-6);
+  transform: translateY(-2px);
+}
+
+.submit-area {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+#alert-container { margin-bottom: 1rem; }
+
+/* ── FAQ ── */
+.faq { margin-top: 3rem; }
+.faq h2 {
+  font-family: 'Fredoka One', cursive;
+  font-size: 1.4rem;
+  margin-bottom: 1.25rem;
+}
+.faq-item {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  margin-bottom: 0.75rem;
+  overflow: hidden;
+}
+.faq-item summary {
+  padding: 1rem 1.25rem;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 0.95rem;
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: background 0.2s;
+}
+.faq-item summary:hover { background: var(--bg-input); }
+.faq-item summary::after {
+  content: '＋';
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  transition: transform 0.2s;
+}
+.faq-item[open] summary::after { content: '－'; }
+.faq-answer {
+  padding: 0 1.25rem 1rem;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  line-height: 1.7;
+}

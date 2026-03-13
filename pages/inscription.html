@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Inscription — Père Noël Secret</title>
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <link rel="stylesheet" href="../assets/css/inscription.css" />
+</head>
+<body>
+
+  <div id="navbar-container"></div>
+
+  <main class="main-content">
+    <h1 class="page-title">📝 Inscription</h1>
+
+    <!------------------------------------------------------------------------>
+    <!-- Supprimer les lignes 18 à 23, 26, 139 pour ouvrir les inscriptions -->
+    <!------------------------------------------------------------------------>
+    
+    <!-- MESSAGE INSCRIPTIONS FERMÉES -->
+    <div class="card form-card animate-in" style="text-align:center;padding:3rem 2rem;">
+      <span style="font-size:4rem;display:block;margin-bottom:1rem;">🎅</span>
+      <h2 style="font-family:'Fredoka One',cursive;font-size:1.8rem;margin-bottom:0.75rem;">Les inscriptions ne sont pas encore ouvertes !</h2>
+      <p style="color:var(--text-secondary);max-width:480px;margin:0 auto;">Reviens bientôt — on t'annoncera l'ouverture des inscriptions dès que possible. 🎁</p>
+    </div>
+
+    <!-- FORMULAIRE (masqué pour l'instant) -->
+    <div style="display:none;">
+    <div class="card form-card animate-in">
+      <h2>Je veux participer ! 🎅</h2>
+      <p class="subtitle">Remplis ce formulaire pour t'inscrire. Tu recevras une confirmation d'inscription sous peu !</p>
+
+      <div id="alert-container"></div>
+
+      <form id="inscription-form" action="https://formspree.io/f/xnjgzpay" method="POST" novalidate>
+
+        <div class="form-group">
+          <label for="pseudo_discord_officiel">Ton pseudo discord [officiel et complet] *</label>
+          <input type="text" id="pseudo_discord_officiel" name="pseudo_discord_officiel" placeholder="pseudo#0000" required />
+        </div>
+
+        <div class="form-group">
+          <label for="pseudo_affiche">Ton pseudo affiché à ton/ta secret santa *</label>
+          <input type="text" id="pseudo_affiche" name="pseudo_affiche" placeholder="Le nom que verra ton secret santa" required />
+        </div>
+
+        <div class="form-group">
+          <label for="email">Ton adresse email *</label>
+          <input type="email" id="email" name="email" placeholder="marie.dupont@email.com" required />
+        </div>
+
+        <div class="form-group">
+          <label for="pseudo_steam">Pseudo Steam</label>
+          <input type="text" id="pseudo_steam" name="pseudo_steam" placeholder="Ton pseudo Steam" />
+        </div>
+
+        <div class="form-group">
+          <label for="pseudo_ea">Pseudo EA</label>
+          <input type="text" id="pseudo_ea" name="pseudo_ea" placeholder="Ton pseudo EA" />
+        </div>
+
+        <div class="form-group">
+          <label for="pseudo_epic">Pseudo Epic</label>
+          <input type="text" id="pseudo_epic" name="pseudo_epic" placeholder="Ton pseudo Epic Games" />
+        </div>
+
+        <div class="form-group">
+          <label for="pseudo_xbox">Pseudo Xbox</label>
+          <input type="text" id="pseudo_xbox" name="pseudo_xbox" placeholder="Ton pseudo Xbox" />
+        </div>
+
+        <div class="form-group">
+          <label for="pseudo_ubisoft">Pseudo Ubisoft</label>
+          <input type="text" id="pseudo_ubisoft" name="pseudo_ubisoft" placeholder="Ton pseudo Ubisoft" />
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="prenom">Ton prénom *</label>
+            <input type="text" id="prenom" name="prenom" placeholder="Ex : Marie" required />
+          </div>
+          <div class="form-group">
+            <label for="nom">Ton nom *</label>
+            <input type="text" id="nom" name="nom" placeholder="Ex : Dupont" required />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="adresse1">Adresse 1</label>
+          <input type="text" id="adresse1" name="adresse1" placeholder="Rue et numéro" />
+        </div>
+
+        <div class="form-group">
+          <label for="adresse2">Adresse 2</label>
+          <input type="text" id="adresse2" name="adresse2" placeholder="Complément d'adresse" />
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="npa">NPA / Code postal</label>
+            <input type="text" id="npa" name="npa" placeholder="1200" />
+          </div>
+          <div class="form-group">
+            <label for="ville">Ville</label>
+            <input type="text" id="ville" name="ville" placeholder="Genève" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="pays">Pays</label>
+          <input type="text" id="pays" name="pays" placeholder="Suisse" />
+        </div>
+
+        <div class="form-group">
+          <label for="telephone">Ton numéro de téléphone</label>
+          <input type="tel" id="telephone" name="telephone" placeholder="+41 00 000 00 00" />
+        </div>
+
+        <div class="form-group">
+          <label for="souhaits">Ma liste de souhaits 🎁</label>
+          <textarea id="souhaits" name="souhaits" maxlength="1000"
+            placeholder="Ex : Un livre de cuisine, des chaussettes rigolotes, du chocolat..."></textarea>
+          <div class="char-count"><span id="souhaits-count">0</span>/1000 caractères</div>
+        </div>
+
+        <div class="form-group">
+          <label for="restrictions">Restrictions / informations utiles</label>
+          <textarea id="restrictions" name="restrictions" maxlength="1000"
+            placeholder="Ex : Je suis allergique aux noix, je ne bois pas d'alcool..."></textarea>
+        </div>
+
+        <div class="submit-area">
+          <button type="submit" class="btn btn-primary" id="submit-btn" data-original-text="🎁 M'inscrire !">
+            🎁 M'inscrire !
+          </button>
+          <span class="text-muted" style="font-size:0.82rem;">* Champs obligatoires</span>
+        </div>
+
+      </form>
+    </div>
+    </div><!-- fin masquage -->
+  </main>
+
+  <div id="footer-container"></div>
+
+  <script src="../assets/js/main.js"></script>
+  <script>
+    // Compteur de caractères
+    const souhaitsField = document.getElementById('souhaits');
+    const souhaitsCount = document.getElementById('souhaits-count');
+    souhaitsField.addEventListener('input', () => {
+      souhaitsCount.textContent = souhaitsField.value.length;
+    });
+
+    // Soumission du formulaire
+    document.getElementById('inscription-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = document.getElementById('submit-btn');
+
+      // Validation
+      const prenom        = document.getElementById('prenom').value.trim();
+      const nom           = document.getElementById('nom').value.trim();
+      const email         = document.getElementById('email').value.trim();
+      const pseudo        = document.getElementById('pseudo_discord_officiel').value.trim();
+      const pseudoAffiche = document.getElementById('pseudo_affiche').value.trim();
+
+      if (!prenom || !nom || !email || !pseudo || !pseudoAffiche) {
+        showAlert('alert-container', 'Merci de remplir tous les champs obligatoires.', 'error');
+        return;
+      }
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        showAlert('alert-container', "L'adresse email semble invalide.", 'error');
+        return;
+      }
+
+      setLoading(btn, true);
+
+      try {
+        const formData = new FormData(e.target);
+        const res = await fetch(e.target.action, {
+          method: 'POST',
+          body: formData,
+          headers: { 'Accept': 'application/json' }
+        });
+
+        if (res.ok) {
+          showAlert('alert-container', `Inscription réussie ! Bienvenue ${pseudoAffiche} 🎉`, 'success');
+          e.target.reset();
+          souhaitsCount.textContent = '0';
+        } else {
+          showAlert('alert-container', 'Une erreur est survenue. Réessaie.', 'error');
+        }
+      } catch(err) {
+        showAlert('alert-container', 'Impossible de contacter le serveur.', 'error');
+      } finally {
+        setLoading(btn, false, "🎁 M'inscrire !");
+      }
+    });
+  </script>
+
+</body>
+</html>

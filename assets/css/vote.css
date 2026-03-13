@@ -1,0 +1,117 @@
+/* ================================================
+   VOTES.CSS — Page de votes
+   ================================================ */
+
+.vote-section { margin-bottom: 2.5rem; }
+.vote-section h2 {
+  font-family: 'Fredoka One', cursive;
+  font-size: 1.4rem;
+  margin-bottom: 0.4rem;
+}
+.vote-section .desc {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  margin-bottom: 1.25rem;
+}
+
+/* ── Options de vote ── */
+.vote-options {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 0.85rem;
+}
+.vote-option {
+  position: relative;
+  cursor: pointer;
+}
+.vote-option input[type="radio"] { display: none; }
+.vote-option label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1.1rem 0.75rem;
+  background: var(--bg-card);
+  border: 2px solid var(--border-color);
+  border-radius: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+}
+.vote-option label .option-emoji { font-size: 1.8rem; }
+.vote-option label .option-label { font-weight: 800; font-size: 0.9rem; }
+.vote-option label .option-sub   { font-size: 0.78rem; color: var(--text-secondary); }
+
+.vote-option input:checked + label {
+  border-color: var(--rainbow-5);
+  background: rgba(17,138,178,0.08);
+  box-shadow: 0 0 0 3px rgba(17,138,178,0.15);
+}
+.vote-option label:hover {
+  border-color: var(--rainbow-4);
+  transform: translateY(-2px);
+}
+
+/* ── Barres de résultats ── */
+.results-bar {
+  margin-top: 1.5rem;
+  display: none;
+}
+.results-bar.visible { display: block; }
+
+.result-row { margin-bottom: 0.75rem; }
+.result-row-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  font-weight: 700;
+  margin-bottom: 0.3rem;
+}
+.result-track {
+  height: 10px;
+  background: var(--bg-input);
+  border-radius: 5px;
+  overflow: hidden;
+}
+.result-fill {
+  height: 100%;
+  border-radius: 5px;
+  background: var(--rainbow-gradient-h);
+  transition: width 0.8s ease;
+}
+
+/* ── Identification votant ── */
+.voter-id-box {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 14px;
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 2rem;
+}
+.voter-id-box h3 {
+  font-family: 'Fredoka One', cursive;
+  margin-bottom: 0.5rem;
+}
+.voter-id-box .form-group { margin-bottom: 0; }
+
+.voter-id-inline {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-end;
+}
+.voter-id-inline .form-group { flex: 1; margin-bottom: 0; }
+
+#alert-container { margin-bottom: 1.5rem; }
+#vote-form { display: none; }
+#vote-form.visible { display: block; }
+
+
+/* ── Bouton voter centré avec espace ── */
+.vote-submit-area {
+  text-align: center;
+  margin-top: 2.5rem;
+}
+.vote-submit-area .btn {
+  padding: 1rem 3rem;
+  font-size: 1.2rem;
+}
