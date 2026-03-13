@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Humane Gang's Secret Santa 🎅</title>
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="stylesheet" href="assets/css/index.css" />
+</head>
+<body>
+
+  <div id="navbar-container"></div>
+
+  <main class="main-content">
+
+    <!-- Hero -->
+    <section class="hero animate-in">
+      <h1 class="rainbow-text">Bienvenue !</h1>
+      <p>Organisation, inscriptions et votes ! 🎁</p>
+    </section>
+
+    <div class="rainbow-divider"></div>
+
+    <!-- Comment ça marche -->
+    <h2 class="section-title">✨ Coming soon.... (askip ya un vote de possible 👀)</h2>
+
+  </main>
+
+  <div id="footer-container"></div>
+
+  <script src="assets/js/main.js"></script>
+  <script>
+    // Charger les stats depuis l'API (placeholder)
+    async function loadStats() {
+      try {
+        const data = await apiFetch('getStats');
+        if (data.inscrits !== undefined) document.getElementById('stat-inscrits').textContent = data.inscrits;
+        if (data.votes    !== undefined) document.getElementById('stat-votes').textContent    = data.votes;
+        if (data.dateEchange) {
+          const jours = Math.ceil((new Date(data.dateEchange) - new Date()) / (1000*60*60*24));
+          document.getElementById('stat-jours').textContent = jours > 0 ? jours : '🎉';
+        }
+      } catch(e) {
+        // API pas encore configurée — on affiche des placeholders
+        document.getElementById('stat-inscrits').textContent = '?';
+        document.getElementById('stat-votes').textContent    = '?';
+        document.getElementById('stat-jours').textContent    = '?';
+      }
+    }
+    document.addEventListener('DOMContentLoaded', loadStats);
+  </script>
+
+</body>
+</html>
