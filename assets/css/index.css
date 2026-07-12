@@ -189,3 +189,27 @@
   opacity: 0.75;
   font-size: 0.95rem;
 }
+
+.participants-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.participant-card {
+  padding: 14px 8px;
+  border-radius: 12px;
+  text-align: center;
+  font-weight: 600;
+  transition: transform 0.2s ease;
+
+  border: 3px solid transparent;
+  background:
+    linear-gradient(var(--card-bg, #1a1a1a), var(--card-bg, #1a1a1a)) padding-box,
+    var(--rainbow-gradient-h) border-box;
+}
+
+.participant-card:hover {
+  transform: translateY(-4px);
+}
