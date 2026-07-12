@@ -46,6 +46,11 @@
     </div>
     <p id="countdown-label" class="countdown-label">avant la fin des inscriptions</p>
     
+    <div class="rainbow-divider"></div>
+
+    <h2 class="section-title">🎁 Les participants 👀</h2>
+    <div id="participants-grid" class="participants-grid"></div>
+
   </main>
 
   <div id="footer-container"></div>
@@ -126,6 +131,28 @@
 
   updateCountdown();
   setInterval(updateCountdown, 1000);
+</script>
+
+<script>
+  // 👉 Ajoute un prénom par personne inscrite
+  const PARTICIPANTS = [
+    "Nagarythe",
+    "Waenniliel",
+    "Domursan",
+    "Litverkzad",
+    "Terrow",
+    "Bouba",
+    "SwanNex",
+  ];
+
+  function renderParticipants() {
+    const grid = document.getElementById('participants-grid');
+    grid.innerHTML = PARTICIPANTS.map(nom => `
+      <div class="participant-card">${nom}</div>
+    `).join('');
+  }
+
+  document.addEventListener('DOMContentLoaded', renderParticipants);
 </script>
 
 </body>
