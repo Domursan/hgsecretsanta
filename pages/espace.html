@@ -37,9 +37,21 @@
         <button class="btn btn-outline" id="btn-logout">Me déconnecter</button>
       </div>
 
+      <!-- ADMIN : navigation entre les espaces -->
+      <div class="card admin-nav animate-in hidden" id="admin-nav">
+        <h3 class="bloc-titre">👑 Espaces des participants</h3>
+        <p class="bloc-sub">📦 = cadeau envoyé · 🎁 = cadeau reçu</p>
+        <div class="admin-liste" id="admin-liste"></div>
+      </div>
+
+      <p class="admin-banniere hidden" id="admin-banniere">
+        <span>👀 Tu consultes l'espace de <b id="cible-nom"></b></span>
+        <button class="btn btn-outline" id="btn-retour">Revenir à mon espace</button>
+      </p>
+
       <div class="card animate-in">
-        <h3 class="bloc-titre">🃏 Ta carte</h3>
-        <p class="bloc-sub">La personne à qui tu offres un cadeau. Chut, c'est secret !</p>
+        <h3 class="bloc-titre" id="carte-titre">🃏 Ta carte</h3>
+        <p class="bloc-sub" id="carte-sub">La personne à qui tu offres un cadeau. Chut, c'est secret !</p>
         <div class="carte-zone" id="carte-zone">
           <p class="carte-attente">⏳ Chargement de ta carte…</p>
         </div>
