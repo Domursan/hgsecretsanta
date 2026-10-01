@@ -3,8 +3,9 @@
    Chargement navbar/footer + toggle thème jour/nuit
    ================================================ */
 
-/* ── URL de l'Apps Script Google Sheets ── */
-const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby11nKSVGzaNZ6cXcWIK3IiB7dVB1KyLjZ8FXVEe-9k0J_wSfCnsp7ptSAs9wVSl0yLog/exec';
+/* ── URL de l'Apps Script Google Sheets (apps-script/Code.gs) ──
+   À remplacer par l'URL /exec de ton nouveau déploiement */
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwEmH1lN4zqyrVmHrj5Q3RU6ddyHLJFxzuUouPR9_-UbMzqq-IsTYrAssKjxjrtZEgnWQ/exec';
 
 /* ================================================
    CHARGEMENT DYNAMIQUE NAVBAR & FOOTER
@@ -118,7 +119,8 @@ async function apiFetch(action, params = {}) {
 async function apiPost(action, data = {}) {
   const res = await fetch(APPS_SCRIPT_URL, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    // text/plain : évite la requête préalable CORS, qu'Apps Script ne gère pas
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
     body: JSON.stringify({ action, ...data }),
     credentials: 'omit'
   });
