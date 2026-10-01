@@ -21,31 +21,46 @@
 
     <div class="rainbow-divider"></div>
 
-    <!-- Comment ça marche -->
-    <!-- <h2 class="section-title">✨ Les inscriptions sont ouvertes 👀</h2> -->
-    <div id="countdown" class="countdown-box">
-      <div class="countdown-item">
-        <span id="cd-jours">--</span>
-        <small>jours</small>
+    <!-- Progression des cadeaux -->
+    <h2 class="section-title">🎄 Où en sont les cadeaux ?</h2>
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+      <defs>
+        <linearGradient id="ring-gradient" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#ff4e6a"/><stop offset="35%" stop-color="#ffd166"/>
+          <stop offset="70%" stop-color="#06d6a0"/><stop offset="100%" stop-color="#9b5de5"/>
+        </linearGradient>
+      </defs>
+    </svg>
+    <div class="progress-box" id="progression" aria-live="polite">
+      <div class="progress-card">
+        <div class="ring" id="ring-envoyes">
+          <svg viewBox="0 0 120 120" aria-hidden="true">
+            <circle class="ring-bg" cx="60" cy="60" r="52"/>
+            <circle class="ring-fg" cx="60" cy="60" r="52" stroke="url(#ring-gradient)"/>
+          </svg>
+          <div class="ring-center">
+            <span class="ring-value">–</span>
+            <small class="ring-total"></small>
+          </div>
+        </div>
+        <p class="ring-label">📦 Cadeaux envoyés</p>
       </div>
-      <span class="countdown-separator">:</span>
-      <div class="countdown-item">
-        <span id="cd-heures">--</span>
-        <small>heures</small>
-      </div>
-      <span class="countdown-separator">:</span>
-      <div class="countdown-item">
-        <span id="cd-minutes">--</span>
-        <small>min</small>
-      </div>
-      <span class="countdown-separator">:</span>
-      <div class="countdown-item">
-        <span id="cd-secondes">--</span>
-        <small>sec</small>
+      <div class="progress-card">
+        <div class="ring" id="ring-recus">
+          <svg viewBox="0 0 120 120" aria-hidden="true">
+            <circle class="ring-bg" cx="60" cy="60" r="52"/>
+            <circle class="ring-fg" cx="60" cy="60" r="52" stroke="url(#ring-gradient)"/>
+          </svg>
+          <div class="ring-center">
+            <span class="ring-value">–</span>
+            <small class="ring-total"></small>
+          </div>
+        </div>
+        <p class="ring-label">🎁 Cadeaux reçus</p>
       </div>
     </div>
-    <p id="countdown-label" class="countdown-label">avant la fin des inscriptions</p>
-    
+    <p id="progress-note" class="countdown-label">Connecte-toi dans « Mon espace » pour valider ton envoi et ta réception.</p>
+
     <div class="rainbow-divider"></div>
 
     <h2 class="section-title">🎁 Les participants 👀</h2>
@@ -57,53 +72,38 @@
 
   <script src="assets/js/main.js"></script>
   <script>
-    // Charger les stats depuis l'API (placeholder)
-    async function loadStats() {
+    /* Progression des envois / réceptions (compteurs publics, sans noms) */
+    const CIRC = 2 * Math.PI * 52;
+
+    function setRing(id, n, total) {
+      const ring = document.getElementById('ring-' + id);
+      const fg = ring.querySelector('.ring-fg');
+      const ratio = total ? Math.min(n / total, 1) : 0;
+      fg.style.strokeDasharray = CIRC;
+      fg.style.strokeDashoffset = CIRC * (1 - ratio);
+      ring.querySelector('.ring-value').textContent = n;
+      ring.querySelector('.ring-total').textContent = 'sur ' + total;
+      ring.setAttribute('aria-label', n + ' sur ' + total);
+    }
+
+    async function loadProgression() {
+      document.querySelectorAll('.ring-fg').forEach(c => {
+        c.style.strokeDasharray = CIRC; c.style.strokeDashoffset = CIRC;
+      });
       try {
-        const data = await apiFetch('getStats');
-        if (data.inscrits !== undefined) document.getElementById('stat-inscrits').textContent = data.inscrits;
-        if (data.votes    !== undefined) document.getElementById('stat-votes').textContent    = data.votes;
-        if (data.dateEchange) {
-          const jours = Math.ceil((new Date(data.dateEchange) - new Date()) / (1000*60*60*24));
-          document.getElementById('stat-jours').textContent = jours > 0 ? jours : '🎉';
+        const data = await apiFetch('progression');
+        if (!data.ok) throw new Error(data.erreur);
+        setRing('envoyes', data.envoyes, data.total);
+        setRing('recus', data.recus, data.total);
+        if (data.total && data.recus === data.total) {
+          document.getElementById('progress-note').textContent = '🎉 Tout le monde a reçu son cadeau, joyeux Noël !';
         }
-      } catch(e) {
-        // API pas encore configurée — on affiche des placeholders
-        document.getElementById('stat-inscrits').textContent = '?';
-        document.getElementById('stat-votes').textContent    = '?';
-        document.getElementById('stat-jours').textContent    = '?';
+      } catch (e) {
+        document.getElementById('progress-note').textContent = 'Progression indisponible pour le moment.';
       }
     }
-    document.addEventListener('DOMContentLoaded', loadStats);
+    document.addEventListener('DOMContentLoaded', loadProgression);
   </script>
-
-  <script>
-  const DATE_FIN_INSCRIPTIONS = new Date('2026-09-30T23:59:00');
-
-  function updateCountdown() {
-    const maintenant = new Date();
-    const diff = DATE_FIN_INSCRIPTIONS - maintenant;
-
-    if (diff <= 0) {
-      document.getElementById('countdown').style.display = 'none';
-      document.getElementById('countdown-label').textContent = '🎉 Les inscriptions sont terminées !';
-      return;
-    }
-
-    const jours    = Math.floor(diff / (1000 * 60 * 60 * 24));
-    const heures   = Math.floor((diff / (1000 * 60 * 60)) % 24);
-    const minutes  = Math.floor((diff / (1000 * 60)) % 60);
-    const secondes = Math.floor((diff / 1000) % 60);
-
-    document.getElementById('cd-jours').textContent    = jours;
-    document.getElementById('cd-heures').textContent   = String(heures).padStart(2, '0');
-    document.getElementById('cd-minutes').textContent  = String(minutes).padStart(2, '0');
-    document.getElementById('cd-secondes').textContent = String(secondes).padStart(2, '0');
-  }
-
-  updateCountdown();
-  setInterval(updateCountdown, 1000);
-</script>
 
 <script>
 
