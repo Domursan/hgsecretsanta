@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mon espace — Père Noël Secret</title>
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <link rel="stylesheet" href="../assets/css/espace.css" />
+</head>
+<body>
+
+  <div id="navbar-container"></div>
+
+  <main class="main-content">
+    <h1 class="page-title">🎁 Mon espace</h1>
+    <div id="alert-container"></div>
+
+    <!-- CONNEXION -->
+    <section id="vue-login" class="card form-card animate-in hidden">
+      <h2>Connexion 🎅</h2>
+      <p class="subtitle">Utilise l'identifiant et le mot de passe que l'organisateur t'a donnés.</p>
+      <div class="form-group">
+        <label for="login">Identifiant</label>
+        <input type="text" id="login" autocomplete="username" autocapitalize="none" spellcheck="false" />
+      </div>
+      <div class="form-group">
+        <label for="mdp">Mot de passe</label>
+        <input type="password" id="mdp" autocomplete="current-password" />
+      </div>
+      <button class="btn btn-primary" id="btn-login" data-original-text="🔑 Me connecter">🔑 Me connecter</button>
+    </section>
+
+    <!-- ESPACE PERSO -->
+    <section id="vue-espace" class="hidden">
+      <div class="espace-head animate-in">
+        <h2>Salut <span id="nom" class="rainbow-text"></span> !</h2>
+        <button class="btn btn-outline" id="btn-logout">Me déconnecter</button>
+      </div>
+
+      <div class="card animate-in">
+        <h3 class="bloc-titre">🃏 Ta carte</h3>
+        <p class="bloc-sub">La personne à qui tu offres un cadeau. Chut, c'est secret !</p>
+        <div class="carte-zone" id="carte-zone">
+          <p class="carte-attente">⏳ Chargement de ta carte…</p>
+        </div>
+      </div>
+
+      <div class="statuts">
+        <div class="card statut animate-in" id="statut-envoi">
+          <span class="statut-icone">📦</span>
+          <h3>Mon cadeau est parti</h3>
+          <p class="statut-etat"></p>
+          <button class="btn" data-type="envoi"></button>
+        </div>
+        <div class="card statut animate-in" id="statut-reception">
+          <span class="statut-icone">🎁</span>
+          <h3>J'ai reçu mon cadeau</h3>
+          <p class="statut-etat"></p>
+          <button class="btn" data-type="reception"></button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="footer-container"></div>
+
+  <script src="../assets/js/main.js"></script>
+  <script src="../assets/js/espace.js"></script>
+</body>
+</html>
