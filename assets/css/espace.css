@@ -34,3 +34,29 @@
 .statut-etat { color: var(--text-secondary); margin-bottom: 1rem; min-height: 1.4em; }
 .statut.fait { box-shadow: 0 0 0 2px var(--rainbow-4), var(--shadow-sm); }
 .statut.fait .statut-etat { color: var(--rainbow-4); font-weight: 700; }
+
+/* ── Admin ── */
+.admin-nav { margin-bottom: 1.25rem; }
+.admin-liste {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(165px, 1fr)); gap: .6rem;
+}
+.admin-compte {
+  display: flex; align-items: center; justify-content: space-between; gap: .5rem;
+  padding: .6rem .8rem; border-radius: 12px; cursor: pointer;
+  font: inherit; font-weight: 700; color: var(--text-primary);
+  background: var(--bg-input); border: 2px solid transparent;
+  transition: transform .15s, border-color .15s;
+}
+.admin-compte:hover { transform: translateY(-2px); }
+.admin-compte.actif {
+  border-color: transparent;
+  background: linear-gradient(var(--bg-input), var(--bg-input)) padding-box, var(--rainbow-gradient-h) border-box;
+}
+.admin-compte > span:first-child { text-align: left; }
+.admin-compte .marques { font-size: .9rem; letter-spacing: .1em; white-space: nowrap; }
+.admin-compte .off { opacity: .2; filter: grayscale(1); }
+.admin-banniere {
+  display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap;
+  padding: .8rem 1rem; margin-bottom: 1.25rem; border-radius: 12px;
+  background: rgba(155, 93, 229, .15); border: 1px solid var(--rainbow-6);
+}
