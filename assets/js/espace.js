@@ -79,13 +79,12 @@ async function loadCarte() {
     if (!res.ok) { zone.innerHTML = `<p class="carte-attente">${res.erreur}</p>`; return; }
     zone.innerHTML = '';
     const img = new Image();
-    img.src = res.image;
     img.alt = 'Ta carte Secret Santa';
     img.className = 'carte-img';
-    // Les navigateurs bloquent l'ouverture directe d'une URL data:, on passe par un blob
-    const blobUrl = URL.createObjectURL(await (await fetch(res.image)).blob());
+    img.onerror = () => { zone.innerHTML = '<p class="carte-attente">Impossible d\'afficher ta carte, préviens l\'organisateur.</p>'; };
+    img.src = res.url;
     const lien = document.createElement('a');
-    lien.href = blobUrl; lien.target = '_blank'; lien.rel = 'noopener';
+    lien.href = res.url; lien.target = '_blank'; lien.rel = 'noopener';
     lien.title = 'Ouvrir en grand';
     lien.appendChild(img);
     zone.appendChild(lien);
