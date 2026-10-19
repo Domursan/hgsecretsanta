@@ -11,6 +11,7 @@ let token = null;
 let moi = null;        // { login, nom, admin }
 let cible = null;      // login de l'espace affiché
 let comptes = [];      // admin : [{ login, nom, envoye, recu }]
+let selection = new Set(); // admin : logins cochés pour un message
 
 function getSession() {
   try { return sessionStorage.getItem(SESSION_KEY); } catch (_) { return null; }
@@ -131,8 +132,75 @@ function renderAdmin() {
 async function loadComptes() {
   try {
     const res = await call('comptes');
-    if (res.ok) { comptes = res.comptes; renderAdmin(); }
+    if (res.ok) { comptes = res.comptes; renderAdmin(); renderDestinataires(); }
   } catch (_) {}
+}
+
+/* ── Admin : message Discord ── */
+function renderDestinataires() {
+  const zone = $('msg-destinataires');
+  zone.innerHTML = '';
+  comptes.forEach(c => {
+    const lab = document.createElement('label');
+    lab.className = 'msg-chip' + (selection.has(c.login) ? ' coche' : '');
+    const cb = document.createElement('input');
+    cb.type = 'checkbox';
+    cb.checked = selection.has(c.login);
+    cb.addEventListener('change', () => {
+      cb.checked ? selection.add(c.login) : selection.delete(c.login);
+      lab.classList.toggle('coche', cb.checked);
+      majCompteur();
+    });
+    lab.appendChild(cb);
+    lab.appendChild(document.createTextNode(c.login === moi.login ? c.nom + ' (moi)' : c.nom));
+    zone.appendChild(lab);
+  });
+  majCompteur();
+}
+
+function majCompteur() {
+  const n = selection.size;
+  $('msg-compteur').textContent = n + (n > 1 ? ' destinataires' : ' destinataire');
+  $('msg-tous').textContent = n === comptes.length && n > 0 ? 'Tout désélectionner' : 'Tout sélectionner';
+}
+
+function toutSelectionner() {
+  selection = selection.size === comptes.length ? new Set() : new Set(comptes.map(c => c.login));
+  renderDestinataires();
+}
+
+async function envoyerMessage() {
+  const texte = $('msg-texte').value.trim();
+  const logins = [...selection];
+  if (!logins.length) { showAlert('alert-container', 'Choisis au moins un destinataire.', 'error'); return; }
+  if (!texte) { showAlert('alert-container', 'Le message est vide.', 'error'); return; }
+  const n = logins.length;
+  if (!confirm(`Envoyer ce message en MP à ${n} personne${n > 1 ? 's' : ''} ?`)) return;
+
+  const btn = $('btn-msg');
+  const res$ = $('msg-resultat');
+  setLoading(btn, true);
+  res$.classList.add('hidden');
+  try {
+    const res = await call('message', { logins, message: texte });
+    if (!res.ok) throw new Error(res.erreur);
+    const lignes = [];
+    if (res.envoyes.length) lignes.push(`✅ Envoyé à : ${res.envoyes.join(', ')}`);
+    res.echecs.forEach(e => lignes.push(`❌ ${e.nom} : ${e.erreur}`));
+    res$.innerHTML = '';
+    lignes.forEach(l => { const p = document.createElement('p'); p.textContent = l; res$.appendChild(p); });
+    res$.classList.remove('hidden');
+    if (!res.echecs.length) {
+      $('msg-texte').value = '';
+      showAlert('alert-container', 'Message envoyé ! 📨', 'success');
+    } else {
+      showAlert('alert-container', 'Certains messages ne sont pas partis, regarde le détail.', 'error');
+    }
+  } catch (err) {
+    if (err.message !== 'session') showAlert('alert-container', err.message || "L'envoi a échoué.", 'error');
+  } finally {
+    setLoading(btn, false, '📨 Envoyer');
+  }
 }
 
 /* Affiche l'espace d'un participant (soi-même par défaut) */
@@ -157,6 +225,7 @@ async function ouvrirEspace(res) {
   comptes = [{ login: res.login, nom: res.nom, envoye: res.statut.envoye, recu: res.statut.recu }];
   $('nom').textContent = res.nom;
   $('admin-nav').classList.toggle('hidden', !moi.admin);
+  $('admin-message').classList.toggle('hidden', !moi.admin);
   show('espace');
   ouvrir(moi.login);
   if (moi.admin) loadComptes();
@@ -183,10 +252,12 @@ async function login() {
 
 function logout(prevenirServeur = true) {
   if (prevenirServeur && token) apiPost('deconnexion', { token }).catch(() => {});
-  token = null; moi = null; cible = null; comptes = [];
+  token = null; moi = null; cible = null; comptes = []; selection = new Set();
   setSession(null);
   $('carte-zone').innerHTML = '';
   $('admin-liste').innerHTML = '';
+  $('msg-destinataires').innerHTML = '';
+  $('msg-resultat').classList.add('hidden');
   show('login');
 }
 
@@ -198,6 +269,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   $('btn-logout').addEventListener('click', () => logout());
   $('btn-retour').addEventListener('click', () => ouvrir(moi.login));
   document.querySelectorAll('.statut button').forEach(b => b.addEventListener('click', toggleStatut));
+  $('msg-tous').addEventListener('click', toutSelectionner);
+  $('btn-msg').addEventListener('click', envoyerMessage);
 
   token = getSession();
   if (!token) { show('login'); return; }

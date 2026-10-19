@@ -60,3 +60,33 @@
   padding: .8rem 1rem; margin-bottom: 1.25rem; border-radius: 12px;
   background: rgba(155, 93, 229, .15); border: 1px solid var(--rainbow-6);
 }
+
+/* ── Admin : message Discord ── */
+.admin-message { margin-bottom: 1.25rem; }
+.admin-message code {
+  background: var(--bg-input); padding: .05rem .35rem; border-radius: 6px; font-size: .85em;
+}
+.msg-entete {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: .75rem; flex-wrap: wrap; margin-bottom: .6rem;
+}
+.msg-compteur { font-weight: 700; color: var(--text-secondary); font-size: .9rem; }
+.btn-petit { padding: .35rem .8rem; font-size: .85rem; }
+.msg-destinataires { display: flex; flex-wrap: wrap; gap: .45rem; margin-bottom: 1rem; }
+.msg-chip {
+  display: inline-flex; align-items: center; gap: .4rem; cursor: pointer;
+  padding: .35rem .75rem; border-radius: 999px; font-weight: 700; font-size: .9rem;
+  background: var(--bg-input); border: 2px solid transparent; user-select: none;
+  transition: border-color .15s, transform .15s;
+}
+.msg-chip:hover { transform: translateY(-1px); }
+.msg-chip input { accent-color: var(--rainbow-6); margin: 0; }
+.msg-chip.coche {
+  background: linear-gradient(var(--bg-input), var(--bg-input)) padding-box, var(--rainbow-gradient-h) border-box;
+}
+.admin-message textarea { width: 100%; resize: vertical; min-height: 90px; font: inherit; }
+.admin-message #btn-msg { width: 100%; }
+.msg-resultat {
+  margin-top: .9rem; padding: .7rem .9rem; border-radius: 12px;
+  background: var(--bg-input); font-size: .9rem; line-height: 1.5;
+}

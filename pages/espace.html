@@ -44,6 +44,23 @@
         <div class="admin-liste" id="admin-liste"></div>
       </div>
 
+      <!-- ADMIN : message Discord aux participants -->
+      <div class="card admin-message animate-in hidden" id="admin-message">
+        <h3 class="bloc-titre">✉️ Envoyer un message</h3>
+        <p class="bloc-sub">Le message part en MP Discord depuis le bot. Écris <code>{nom}</code> pour insérer le nom de chaque personne.</p>
+        <div class="msg-entete">
+          <span class="msg-compteur" id="msg-compteur">0 destinataire</span>
+          <button type="button" class="btn btn-outline btn-petit" id="msg-tous">Tout sélectionner</button>
+        </div>
+        <div class="msg-destinataires" id="msg-destinataires"></div>
+        <div class="form-group">
+          <label for="msg-texte">Message</label>
+          <textarea id="msg-texte" rows="4" maxlength="1900" placeholder="Ho ho ho {nom} ! Petit rappel : …"></textarea>
+        </div>
+        <button type="button" class="btn btn-primary" id="btn-msg" data-original-text="📨 Envoyer">📨 Envoyer</button>
+        <div class="msg-resultat hidden" id="msg-resultat"></div>
+      </div>
+
       <p class="admin-banniere hidden" id="admin-banniere">
         <span>👀 Tu consultes l'espace de <b id="cible-nom"></b></span>
         <button class="btn btn-outline" id="btn-retour">Revenir à mon espace</button>
